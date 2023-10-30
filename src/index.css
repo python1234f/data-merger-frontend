@@ -1,0 +1,27 @@
+/* src/App.css */
+
+.App {
+  font-family: Arial, Helvetica, sans-serif;
+  text-align: center;
+  padding: 2rem;
+}
+
+.posts-table {
+  width: 80%;
+  margin: 2rem auto;
+  border-collapse: collapse;
+}
+
+.posts-table th, .posts-table td {
+  border: 1px solid #ddd;
+  padding: 0.75rem;
+  text-align: left;
+}
+
+.posts-table th {
+  background-color: #f2f2f2;
+}
+
+.posts-table tr:hover {
+  background-color: #f5f5f5;
+}

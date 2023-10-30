@@ -1,0 +1,58 @@
+.App {
+  display: flex;
+  justify-content: space-between;
+}
+
+.data-section {
+  width: 48%;  /* Reduced width slightly to account for padding */
+  float: left;
+  box-sizing: border-box;
+  padding: 20px;
+  border: 1px solid #eaeaea;  /* Added a light border for visual separation */
+  border-radius: 5px;
+  text-align: left;  /* Ensure content inside data-section is aligned to the left */
+}
+
+table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 14px;
+  overflow: hidden;  /* Added to ensure the table fits within its parent */
+}
+
+th, td {
+  border: 1px solid #ddd;
+  padding: 8px;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  overflow: hidden;  /* Ensures the content doesn't spill over the cell */
+  max-width: 150px;  /* Default max width, but it'll be overridden by the inline style */
+}
+
+.selected-column {
+  background-color: #f2f2f2;
+  cursor: pointer;
+}
+
+th:hover {
+  background-color: #ddd;
+}
+
+.json-tree-view {
+  font-size: 0.9em;
+  text-align: left; /* Ensuring the JSON tree view's content is aligned to the left */
+}
+
+.json-tree-view > span {
+  cursor: pointer;
+  user-select: none;
+}
+
+/* Styling for the matched values (green) and unmatched values (red) */
+.matched-value {
+  background-color: #d4edda;  /* A light green */
+}
+
+.unmatched-value {
+  background-color: #f8d7da;  /* A light red */
+}
