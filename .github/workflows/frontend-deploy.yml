@@ -1,0 +1,37 @@
+name: Deploy React Frontend
+
+on:
+  push:
+    branches:
+      - main
+    paths:
+      - 'frontend/**'
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout
+      uses: actions/checkout@v2
+
+    - name: Install and Build
+      run: |
+        cd frontend
+        npm install
+        npm run build
+
+    - name: Configure AWS credentials
+      uses: aws-actions/configure-aws-credentials@v1
+      with:
+        aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+        aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+        aws-region: us-west-2
+
+    - name: Sync assets to S3
+      run: |
+        aws s3 sync frontend/build/ s3://your-s3-bucket-name/
+
+    - name: Invalidate CloudFront distribution
+      run: |
+        aws cloudfront create-invalidation --distribution-id your-cloudfront-distribution-id --paths "/*"
