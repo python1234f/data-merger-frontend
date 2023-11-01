@@ -38,3 +38,9 @@ Your app is now ready to be deployed!
 2. Navigate to the project directory.
 3. Run `npm install` to install all dependencies.
 4. Run `npm start` to start the application in development mode.
+
+## License
+
+License
+
+All rights reserved. This software and associated documentation files (the "Software"), may not be used, copied, redistributed, modified, or distributed without prior written consent. Use of the Software without agreement and consent is strictly prohibited. All other use is strictly prohibited and may violate relevant federal and state laws
