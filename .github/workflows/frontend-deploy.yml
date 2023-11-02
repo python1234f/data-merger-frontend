@@ -5,12 +5,8 @@ on:
     branches:
       - main
     paths:
-      - 'frontend/**'
+      - '**'
   workflow_dispatch:
-
-env:
-  S3_BUCKET_NAME: ${{ environment.S3_BUCKET_NAME }}
-  CLOUDFRONT_DISTRIBUTION_ID: ${{ environment.CLOUDFRONT_DISTRIBUTION_ID }}
 
 jobs:
   deploy:
@@ -24,7 +20,6 @@ jobs:
 
     - name: Install and Build
       run: |
-        cd frontend
         npm install
         npm run build
 
@@ -37,8 +32,8 @@ jobs:
 
     - name: Sync assets to S3 with cache control
       run: |
-        aws s3 sync frontend/build/ s3://${{ env.S3_BUCKET_NAME }}/ --delete --cache-control "max-age=0, no-cache, no-store, must-revalidate"
+        aws s3 sync build/ s3://${{ vars.S3_BUCKET_NAME }}/ --delete --cache-control "max-age=0, no-cache, no-store, must-revalidate"
 
     - name: Invalidate CloudFront distribution
       run: |
-        aws cloudfront create-invalidation --distribution-id ${{ env.CLOUDFRONT_DISTRIBUTION_ID }} --paths "/*"
+        aws cloudfront create-invalidation --distribution-id ${{ vars.CLOUDFRONT_DISTRIBUTION_ID }} --paths "/*"
