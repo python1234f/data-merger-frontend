@@ -1,14 +1,15 @@
 .App {
   display: flex;
   justify-content: space-between;
+  flex-wrap: wrap;  /* Added to handle wrapping for smaller screens */
+  margin: 20px;     /* Added some margin for better spacing */
 }
 
 .data-section {
-  width: 48%;  /* Reduced width slightly to account for padding */
-  float: left;
+  width: 48%;
   box-sizing: border-box;
   padding: 20px;
-  border: 1px solid #eaeaea;  /* Added a light border for visual separation */
+  border: 1px solid #eaeaea;
   border-radius: 5px;
   text-align: left;  /* Ensure content inside data-section is aligned to the left */
 }
@@ -17,7 +18,7 @@ table {
   width: 100%;
   border-collapse: collapse;
   font-size: 14px;
-  overflow: hidden;  /* Added to ensure the table fits within its parent */
+  overflow-x: auto; /* Horizontal scrolling for tables if content overflows */
 }
 
 th, td {
@@ -25,8 +26,8 @@ th, td {
   padding: 8px;
   text-overflow: ellipsis;
   white-space: nowrap;
-  overflow: hidden;  /* Ensures the content doesn't spill over the cell */
-  max-width: 150px;  /* Default max width, but it'll be overridden by the inline style */
+  overflow: hidden;
+  max-width: 150px;
 }
 
 .selected-column {
@@ -50,9 +51,16 @@ th:hover {
 
 /* Styling for the matched values (green) and unmatched values (red) */
 .matched-value {
-  background-color: #d4edda;  /* A light green */
+  background-color: #d4edda;
 }
 
 .unmatched-value {
-  background-color: #f8d7da;  /* A light red */
+  background-color: #f8d7da;
+}
+
+.merge-section {
+  width: 100%;
+  padding: 10px 0;
+  text-align: center;
+  margin-bottom: 20px;  /* Added margin for separation */
 }

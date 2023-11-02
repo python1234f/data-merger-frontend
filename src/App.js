@@ -20,7 +20,7 @@
   useEffect(() => {
     if (selectedEndpoint1) {
       setLoading1(true);
-      fetch(API_URL + "/" + selectedEndpoint1 + "?_limit=100")  // Add ?_limit=100 here
+      fetch(API_URL + "/" + selectedEndpoint1 + "?_limit=100")
         .then(response => response.json())
         .then(data => {
           setData1(data);
@@ -32,7 +32,7 @@
   useEffect(() => {
     if (selectedEndpoint2) {
       setLoading2(true);
-      fetch(API_URL + "/" + selectedEndpoint2 + "?_limit=100")  // Add ?_limit=100 here
+      fetch(API_URL + "/" + selectedEndpoint2 + "?_limit=100")
         .then(response => response.json())
         .then(data => {
           setData2(data);
@@ -52,9 +52,77 @@
 
     const maxCellWidth = viewportWidth < 1400 ? '100px' : '150px';
 
+  const hasMatchingRows = selectedColumn1 && selectedColumn2 &&
+                          data1.some(item1 => data2.some(item2 => item1[selectedColumn1] === item2[selectedColumn2]));
+
+  const handleMerge = () => {
+    if (hasMatchingRows) {
+      const shouldMerge = window.confirm(`Do you really want to merge on ${selectedColumn1} and ${selectedColumn2}?`);
+      if (shouldMerge) {
+        // Replace with your actual backend URL and logic
+        fetch('https://dummy.backend.url/merge', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json'
+          },
+          body: JSON.stringify({
+            url1: selectedEndpoint1,
+            url2: selectedEndpoint2,
+            column1: selectedColumn1,
+            column2: selectedColumn2
+          })
+        })
+        .then(response => response.json())
+        .then(data => {
+          // Handle backend response here
+          console.log(data);
+        });
+      }
+    }
+  };
+
+const mergeButtonMessage = () => {
+  const numberOfTables = (data1.length ? 1 : 0) + (data2.length ? 1 : 0);
+  const numberOfSelectedColumns = (selectedColumn1 ? 1 : 0) + (selectedColumn2 ? 1 : 0);
+
+  if (numberOfSelectedColumns === 0) {
+    return numberOfTables === 0 ? "Please select data" : "Please select first column";
+  }
+
+  if (numberOfSelectedColumns === 1) {
+    return numberOfTables < 2 ? "Please select data" : "Please select second column";
+  }
+
+  // In case both columns are selected and data for both tables is available
+  if (numberOfSelectedColumns === 2 && numberOfTables === 2) {
+    return hasMatchingRows ?
+      "Ready to Merge" :
+      `No rows match between columns ${selectedColumn1} and ${selectedColumn2}`;
+  }
+
+  // Default case, though should not be reached
+  return "Please select data";
+};
+
+
+
+
     return (
       <div className="App">
-        {/* Component 1 */}
+
+        <div className="merge-section">
+          <button
+            style={{
+              backgroundColor: !selectedColumn1 || !selectedColumn2 ? 'grey' : hasMatchingRows ? 'green' : 'yellow',
+            }}
+            disabled={!selectedColumn1 || !selectedColumn2 || (!hasMatchingRows && selectedColumn1 && selectedColumn2)}
+            onClick={handleMerge}
+          >
+            Merge Tables
+          </button>
+          <div>{mergeButtonMessage()}</div>
+        </div>
+
         <div className="data-section">
           <select value={selectedEndpoint1} onChange={(e) => setSelectedEndpoint1(e.target.value)}>
             <option value="">Select Endpoint</option>
