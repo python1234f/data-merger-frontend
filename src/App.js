@@ -1,10 +1,10 @@
   import React, { useState, useEffect } from 'react';
-  import './App.css';
+  import './App.scss';
 
   const API_URL = 'https://jsonplaceholder.typicode.com';
 
   const endpointsD1 = ["posts", "todos"];
-  const endpointsD2 = ["users", "albums"];
+  const endpointsD2 = ["users"];
 
   const App = () => {
     const [viewportWidth, setViewportWidth] = useState(window.innerWidth);
@@ -59,18 +59,20 @@
     if (hasMatchingRows) {
       const shouldMerge = window.confirm(`Do you really want to merge on ${selectedColumn1} and ${selectedColumn2}?`);
       if (shouldMerge) {
+        let payload = JSON.stringify({
+          url1: API_URL + "/" + selectedEndpoint1,
+          url2: API_URL + "/" + selectedEndpoint2,
+            column1: selectedColumn1,
+            column2: selectedColumn2
+        });
+        alert(payload)
         // Replace with your actual backend URL and logic
         fetch('https://dummy.backend.url/merge', {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json'
           },
-          body: JSON.stringify({
-            url1: selectedEndpoint1,
-            url2: selectedEndpoint2,
-            column1: selectedColumn1,
-            column2: selectedColumn2
-          })
+          body: payload
         })
         .then(response => response.json())
         .then(data => {
@@ -104,17 +106,18 @@ const mergeButtonMessage = () => {
   return "Please select data";
 };
 
-
-
-
     return (
       <div className="App">
 
         <div className="merge-section">
           <button
-            style={{
-              backgroundColor: !selectedColumn1 || !selectedColumn2 ? 'grey' : hasMatchingRows ? 'green' : 'yellow',
-            }}
+          className={`merge-button ${
+            !selectedColumn1 || !selectedColumn2
+              ? 'disabled'
+              : hasMatchingRows
+              ? 'ready'
+              : 'warning'
+          }`}
             disabled={!selectedColumn1 || !selectedColumn2 || (!hasMatchingRows && selectedColumn1 && selectedColumn2)}
             onClick={handleMerge}
           >
